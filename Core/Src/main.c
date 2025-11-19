@@ -22,6 +22,7 @@
 /* Private includes ----------------------------------------------------------*/
 #include "gpio.h"
 #include "mq135.h"
+#include "uart.h"
 /* USER CODE BEGIN Includes */
 
 /* USER CODE END Includes */
