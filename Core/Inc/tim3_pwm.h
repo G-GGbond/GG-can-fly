@@ -7,6 +7,7 @@
 extern TIM_HandleTypeDef htim3;
 
 // 函数声明
+void MX_TIM3_Init(void);
 void TIM3_PWM_Init(void);
 void TIM3_PWM_Start(void);
 void TIM3_PWM_Stop(void);
