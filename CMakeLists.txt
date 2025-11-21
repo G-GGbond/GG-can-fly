@@ -52,6 +52,7 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     Core/Src/mq135.c
     Core/Src/uart.c
     Core/Src/dht11.c
+    Core/Src/tim3_pwm.c
 )
 
 # Add include paths

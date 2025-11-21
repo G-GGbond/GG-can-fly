@@ -19,7 +19,7 @@ extern "C" {
 /* USER CODE END Includes */
 
 /* USER CODE BEGIN Exported_Functions */
-
+extern ADC_HandleTypeDef hadc1;
 void MX_ADC1_Init(void);
 void MQ135_ADC_Init(void);
 uint32_t Get_Adc_MQ135_Value(void);

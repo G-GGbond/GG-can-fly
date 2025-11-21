@@ -7,7 +7,7 @@
   */
 
 #define SAMPLES           30
-extern ADC_HandleTypeDef hadc1;
+ADC_HandleTypeDef hadc1;
 
 void MX_ADC1_Init(void)
 {

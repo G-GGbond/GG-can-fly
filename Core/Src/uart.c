@@ -6,7 +6,7 @@
   * @retval None
   */
 
-extern UART_HandleTypeDef huart1;
+UART_HandleTypeDef huart1;
 
 void MX_USART1_UART_Init(void)
 {

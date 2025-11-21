@@ -20,9 +20,6 @@
 #include "main.h"
 
 /* Private includes ----------------------------------------------------------*/
-#include "gpio.h"
-#include "mq135.h"
-#include "uart.h"
 /* USER CODE BEGIN Includes */
 
 /* USER CODE END Includes */
@@ -43,9 +40,6 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
-ADC_HandleTypeDef hadc1;
-
-UART_HandleTypeDef huart1;
 
 /* USER CODE BEGIN PV */
 
@@ -93,6 +87,7 @@ int main(void)
   MX_GPIO_Init();
   MX_ADC1_Init();
   MX_USART1_UART_Init();
+  MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
