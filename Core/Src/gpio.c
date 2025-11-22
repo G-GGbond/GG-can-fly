@@ -25,12 +25,12 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(MQ135_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : DHT11_Pin 
+ /* Configure GPIO pin : DHT11_Pin */
   GPIO_InitStruct.Pin = DHT11_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(DHT11_GPIO_Port, &GPIO_InitStruct);*/
+  HAL_GPIO_Init(DHT11_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : OLED_SCL_Pin OLED_SDA_Pin */
   GPIO_InitStruct.Pin = OLED_SCL_Pin|OLED_SDA_Pin;

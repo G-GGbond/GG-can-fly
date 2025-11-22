@@ -3,16 +3,19 @@
 
 #include "main.h"
 
-// 函数声明
-void DHT11_GPIO_Init(void);
-void DHT11_GPIO_Mode_OUT(void);
-void DHT11_GPIO_Mode_IN(void);
-unsigned int DHT11_Read_Data(void);
-float Get_temperature(void);
-float Get_humidity(void);
-void delay_us(uint16_t us); 
+//IO方向设置
+#define DHT11_HIGH     HAL_GPIO_WritePin(GPIOB, DHT11_Pin,	GPIO_PIN_SET)
+#define DHT11_LOW      HAL_GPIO_WritePin(GPIOB, DHT11_Pin, GPIO_PIN_RESET)
+#define DHT11_DQ_IN    HAL_GPIO_ReadPin(GPIOB, DHT11_Pin)
 
-extern float temperature;
-extern float humidity;
+#define u8 uint8_t
+void delay_us(uint32_t us);
+u8 DHT11_Init(void);//初始化DHT11
+u8 DHT11_Read_Data(u8 *temp,u8 *humi);//读取温湿度
+u8 DHT11_Read_Byte(void);	//读出一个字节
+u8 DHT11_Read_Bit(void);	//读出一个位
+u8 DHT11_Check(void);		//检测是否存在DHT11
+void DHT11_Rst(void);		//复位DHT11   
+void DWT_Init(void);
 
 #endif

@@ -21,11 +21,13 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <stdio.h>
 #include "gpio.h"
 #include "uart.h"
 #include "dht11.h"
 #include "mq135.h"
 #include "tim3_pwm.h"
+#include <string.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -57,7 +59,25 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+int __io_putchar(int ch)
+{
+    HAL_UART_Transmit(&huart1, (uint8_t *)&ch, 1, HAL_MAX_DELAY);
+    return ch;
+}
 
+int __io_getchar(void)
+{
+    uint8_t ch = 0;
+    HAL_UART_Receive(&huart1, &ch, 1, HAL_MAX_DELAY);
+    return ch;
+}
+
+// 可选：如果上面的不行，也加上这个
+int _write(int file, char *ptr, int len)
+{
+    HAL_UART_Transmit(&huart1, (uint8_t*)ptr, len, HAL_MAX_DELAY);
+    return len;
+}
 /* USER CODE END 0 */
 
 /**
@@ -93,20 +113,57 @@ int main(void)
   MX_USART1_UART_Init();
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
+  MQ135_ADC_Init();
+  TIM3_PWM_Start();
+  DWT_Init();
+  uint8_t temperature = 0;  //温度
+ 
+	 uint8_t humidity = 0;     //湿
+    uint8_t speed = 0;
+ HAL_Delay(1000);
+
+  while (1)
+  {
+    /* USER CODE END WHILE */
+    // 读取DHT11数据
+   /*  if (DHT11_Read_Data(&temperature, &humidity) == 0) {
+            printf("温度：%d℃, 湿度：%d%%\r\n", temperature, humidity);
+        } else {
+            printf("读取失败！\r\n");
+        }*/
+        
+        HAL_Delay(2000); // DHT11需要至少2秒间隔
+
+ /*
+      printf("空气质量 = %d%%\r\n\n", Get_MQ135_Percentage_value() );
+     HAL_Delay(1000);
+
+
+    // 测试不同速度级别
+    printf("Setting fan speed to %d%%\r\n", speed);
+    TIM3_PWM_Set_Speed(speed);
+    HAL_Delay(3000);  // 每个速度运行3�?
+    
+    // 速度递增
+    speed += 20;
+    if (speed > 100) 
+    {
+      speed = 0;
+      printf("Cycle completed, stopping fan for 5 seconds...\r\n");
+      TIM3_PWM_Stop();  // 停止风扇
+      HAL_Delay(5000);
+      TIM3_PWM_Start(); // 重新启动
+    }*/
+    /* USER CODE BEGIN 3 */
+  }
+  /* USER CODE END 3 */
 
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  while (1)
-  {
-    /* USER CODE END WHILE */
 
-    /* USER CODE BEGIN 3 */
-  }
-  /* USER CODE END 3 */
 }
-
 /**
   * @brief System Clock Configuration
   * @retval None
@@ -120,10 +177,13 @@ void SystemClock_Config(void)
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+  RCC_OscInitStruct.HSEState = RCC_HSE_ON;
+  RCC_OscInitStruct.HSEPredivValue = RCC_HSE_PREDIV_DIV1;
   RCC_OscInitStruct.HSIState = RCC_HSI_ON;
-  RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
-  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_NONE;
+  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
+  RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL9;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {
     Error_Handler();
@@ -133,12 +193,12 @@ void SystemClock_Config(void)
   */
   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
-  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_HSI;
+  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
+  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0) != HAL_OK)
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
   {
     Error_Handler();
   }
